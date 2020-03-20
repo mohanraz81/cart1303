@@ -1,0 +1,27 @@
+---
+version: "3.7"
+services:
+  cart-frontend:
+    build:
+      context: ./frontend
+    image: mohanraz81/cart-fe:2.0
+    depends_on:
+      - cart-database
+    environment:
+      MY_DB_HOST_WRITE: cart-database
+      MY_DB_HOST_READ: cart-database
+      MY_DB_NAME: mydatadb
+      MY_DB_USER: dbadmin
+      MY_DB_PASS: dbadmin123
+    ports:
+      - "9001:80"
+  cart-database:
+    build:
+      context: ./database
+    image: mohanraz81/cart-db:2.0
+    volumes:
+      - type: volume
+        source: cart-database-datavol
+        target: /var/lib/mysql
+volumes:
+  cart-database-datavol:
